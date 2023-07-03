@@ -32,7 +32,7 @@ func getFlutterError(_ error: Error) -> FlutterError {
                 "UNUserNotificationCenter.current().delegate is not set. Check readme at https://pub.dev/packages/flutter_apns."
             )
             UIApplication.shared.registerForRemoteNotifications()
-
+            print("configure registerForRemoteNotifications called")
             // check for onLaunch notification *after* configure has been ran
             if let launchNotification = launchNotification {
                 channel.invokeMethod("onLaunch", arguments: launchNotification)
@@ -159,6 +159,7 @@ func getFlutterError(_ error: Error) -> FlutterError {
         }
         
         application.registerForRemoteNotifications()
+        
     }
     
     //MARK:  - AppDelegate
@@ -180,6 +181,8 @@ func getFlutterError(_ error: Error) -> FlutterError {
     }
     
     public func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+
+        print("Got Token, \(deviceToken.hexString)!")
         channel.invokeMethod("onToken", arguments: deviceToken.hexString)
     }
     
